@@ -1,0 +1,1172 @@
+[{
+  "_id": {
+    "$oid": "677da645630e1c3411ddd1cf"
+  },
+  "name": "bob",
+  "email": "bob@teacher.com",
+  "password": "$2a$10$i4B6GFrjsY7w260Ghay6AerE6rGudei4pzzNddX14MhOI7JZ1uceG",
+  "role": "teacher",
+  "birthday": {
+    "$date": "2001-08-14T00:00:00.000Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67ac735fa712bfbd143a7aa6"
+  },
+  "name": "Alice Smith",
+  "email": "alice@teacher.com",
+  "password": "$2a$10$cT8cpNZIERfrbVBTVoUiC.sBJtdPVdVW2ib43FlYfy0CUtehBf0VW",
+  "role": "teacher",
+  "birthday": {
+    "$date": "1985-05-15T00:00:00.000Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67ac735fa712bfbd143a7aa8"
+  },
+  "name": "John Doe",
+  "email": "john@teacher.com",
+  "password": "$2a$10$LThRi55sDzffk3mmlBb88uFqFqEvRRfVRMjMkQ3cHmvFkXC/SHQyG",
+  "role": "teacher",
+  "birthday": {
+    "$date": "1980-03-20T00:00:00.000Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67877062889cfafc2011b634"
+  },
+  "name": "fst",
+  "email": "fst@example.com",
+  "password": "$2a$10$ECXb47sKrMqhOij4mrmdE.S02pX8kZeZ130tlwW.NN2bk4C2sQRPi",
+  "role": "student",
+  "birthday": {
+    "$date": "2009-05-14T00:00:00.000Z"
+  },
+  "__t": "Student",
+  "studies": [
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7b50"
+      },
+      "session_start": {
+        "$date": "2025-01-22T09:27:26.064Z"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67756887be52a9c12a14ab2c"
+      },
+      "session_start": {
+        "$date": "2025-01-21T09:27:26.064Z"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7b41"
+      },
+      "session_start": {
+        "$date": "2025-01-21T09:27:26.064Z"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7bcf"
+      },
+      "session_start": {
+        "$date": "2025-02-18T09:27:26.064Z"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7b76"
+      },
+      "session_start": {
+        "$date": "2025-02-11T09:27:26.064Z"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7afa"
+      },
+      "session_start": {
+        "$date": "2025-01-27T09:27:26.064Z"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7b67"
+      },
+      "session_start": {
+        "$date": "2025-01-29T09:27:26.064Z"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7b53"
+      },
+      "session_start": {
+        "$date": "2025-02-12T09:27:26.064Z"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7b2c"
+      },
+      "session_start": {
+        "$date": "2025-02-17T09:27:26.064Z"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7b38"
+      },
+      "session_start": {
+        "$date": "2025-02-05T09:27:26.064Z"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7b64"
+      },
+      "session_start": {
+        "$date": "2025-02-18T10:49:18.966Z"
+      },
+      "_id": {
+        "$oid": "67b465aea0cd3b29dc3e02a2"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7b6a"
+      },
+      "session_start": {
+        "$date": "2025-02-18T10:49:26.468Z"
+      },
+      "_id": {
+        "$oid": "67b465b6a0cd3b29dc3e02c2"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7ae8"
+      },
+      "session_start": {
+        "$date": "2025-03-17T11:22:39.632Z"
+      },
+      "_id": {
+        "$oid": "67d805ffef9bb5563da79a14"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7aeb"
+      },
+      "session_start": {
+        "$date": "2025-03-22T19:11:49.619Z"
+      },
+      "_id": {
+        "$oid": "67df0b7545e1f2677107c8e3"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7aeb"
+      },
+      "session_start": {
+        "$date": "2025-03-22T19:11:49.902Z"
+      },
+      "_id": {
+        "$oid": "67df0b7545e1f2677107c8f6"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7aee"
+      },
+      "session_start": {
+        "$date": "2025-03-22T19:13:54.666Z"
+      },
+      "_id": {
+        "$oid": "67df0bf245e1f2677107c938"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7aee"
+      },
+      "session_start": {
+        "$date": "2025-03-22T19:13:54.885Z"
+      },
+      "_id": {
+        "$oid": "67df0bf245e1f2677107c94d"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7aeb"
+      },
+      "session_start": {
+        "$date": "2025-03-22T19:14:28.375Z"
+      },
+      "_id": {
+        "$oid": "67df0c1445e1f2677107c995"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7aeb"
+      },
+      "session_start": {
+        "$date": "2025-03-22T19:14:28.557Z"
+      },
+      "_id": {
+        "$oid": "67df0c1445e1f2677107c9ac"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7af7"
+      },
+      "session_start": {
+        "$date": "2025-03-22T23:06:02.116Z"
+      },
+      "_id": {
+        "$oid": "67df425a45e1f2677107ca33"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7af7"
+      },
+      "session_start": {
+        "$date": "2025-03-22T23:06:02.305Z"
+      },
+      "_id": {
+        "$oid": "67df425a45e1f2677107ca4c"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7ae8"
+      },
+      "session_start": {
+        "$date": "2025-03-22T23:41:04.310Z"
+      },
+      "_id": {
+        "$oid": "67df4a90f2ac0c87d7d95a12"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7ae8"
+      },
+      "session_start": {
+        "$date": "2025-03-22T23:41:04.541Z"
+      },
+      "_id": {
+        "$oid": "67df4a90f2ac0c87d7d95a2d"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7ae8"
+      },
+      "session_start": {
+        "$date": "2025-03-22T23:41:11.899Z"
+      },
+      "_id": {
+        "$oid": "67df4a97f2ac0c87d7d95a49"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7ae8"
+      },
+      "session_start": {
+        "$date": "2025-03-22T23:41:13.151Z"
+      },
+      "_id": {
+        "$oid": "67df4a99f2ac0c87d7d95a80"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7ae8"
+      },
+      "session_start": {
+        "$date": "2025-03-22T23:58:53.783Z"
+      },
+      "_id": {
+        "$oid": "67df4ebd5f729da374c50b68"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7ae8"
+      },
+      "session_start": {
+        "$date": "2025-03-22T23:58:54.055Z"
+      },
+      "_id": {
+        "$oid": "67df4ebe5f729da374c50b89"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7ae8"
+      },
+      "session_start": {
+        "$date": "2025-03-22T23:59:07.718Z"
+      },
+      "_id": {
+        "$oid": "67df4ecb5f729da374c50bef"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7ae8"
+      },
+      "session_start": {
+        "$date": "2025-03-22T23:59:07.931Z"
+      },
+      "_id": {
+        "$oid": "67df4ecb5f729da374c50c12"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7af4"
+      },
+      "session_start": {
+        "$date": "2025-03-22T23:59:15.179Z"
+      },
+      "_id": {
+        "$oid": "67df4ed35f729da374c50c7e"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7af4"
+      },
+      "session_start": {
+        "$date": "2025-03-22T23:59:15.425Z"
+      },
+      "_id": {
+        "$oid": "67df4ed35f729da374c50ca3"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7ae8"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:10:56.989Z"
+      },
+      "_id": {
+        "$oid": "67df51905f729da374c50d15"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7ae8"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:10:57.181Z"
+      },
+      "_id": {
+        "$oid": "67df51915f729da374c50d3c"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7afd"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:16:15.920Z"
+      },
+      "_id": {
+        "$oid": "67df52cf5f729da374c50e32"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7afd"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:16:16.142Z"
+      },
+      "_id": {
+        "$oid": "67df52d05f729da374c50e5b"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7ae8"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:16:28.203Z"
+      },
+      "_id": {
+        "$oid": "67df52dc5f729da374c50f05"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7ae8"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:16:28.402Z"
+      },
+      "_id": {
+        "$oid": "67df52dc5f729da374c50f30"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7ae8"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:19:47.760Z"
+      },
+      "_id": {
+        "$oid": "67df53a35f729da374c50fb4"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7ae8"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:19:47.944Z"
+      },
+      "_id": {
+        "$oid": "67df53a35f729da374c50fe1"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7aee"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:20:08.057Z"
+      },
+      "_id": {
+        "$oid": "67df53b85f729da374c5109b"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7aee"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:20:08.257Z"
+      },
+      "_id": {
+        "$oid": "67df53b85f729da374c510ca"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7aee"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:21:52.226Z"
+      },
+      "_id": {
+        "$oid": "67df54205f729da374c511f0"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7aee"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:21:52.310Z"
+      },
+      "_id": {
+        "$oid": "67df54205f729da374c51221"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7b64"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:22:01.888Z"
+      },
+      "_id": {
+        "$oid": "67df54295f729da374c512eb"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7b64"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:22:02.018Z"
+      },
+      "_id": {
+        "$oid": "67df542a5f729da374c51332"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7b64"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:24:06.416Z"
+      },
+      "_id": {
+        "$oid": "67df54a65f729da374c513b6"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7b64"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:24:30.679Z"
+      },
+      "_id": {
+        "$oid": "67df54be5f729da374c5143c"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7b64"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:26:16.346Z"
+      },
+      "_id": {
+        "$oid": "67df55285f729da374c514c7"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7b00"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:26:23.637Z"
+      },
+      "_id": {
+        "$oid": "67df552f5f729da374c5156c"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7b00"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:26:23.759Z"
+      },
+      "_id": {
+        "$oid": "67df552f5f729da374c515a4"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7b00"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:26:26.090Z"
+      },
+      "_id": {
+        "$oid": "67df55325f729da374c5164f"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7b00"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:26:26.191Z"
+      },
+      "_id": {
+        "$oid": "67df55325f729da374c51689"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7b06"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:26:29.979Z"
+      },
+      "_id": {
+        "$oid": "67df55355f729da374c5173a"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7b06"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:26:30.102Z"
+      },
+      "_id": {
+        "$oid": "67df55365f729da374c51776"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7ba2"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:26:39.313Z"
+      },
+      "_id": {
+        "$oid": "67df553f5f729da374c5186c"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7ba2"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:26:39.408Z"
+      },
+      "_id": {
+        "$oid": "67df553f5f729da374c518aa"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7ba2"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:26:42.439Z"
+      },
+      "_id": {
+        "$oid": "67df55425f729da374c51967"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7ba2"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:26:42.525Z"
+      },
+      "_id": {
+        "$oid": "67df55425f729da374c519a7"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7b09"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:26:47.314Z"
+      },
+      "_id": {
+        "$oid": "67df55475f729da374c51a6a"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7b09"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:26:47.419Z"
+      },
+      "_id": {
+        "$oid": "67df55475f729da374c51aac"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7ba2"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:26:49.756Z"
+      },
+      "_id": {
+        "$oid": "67df55495f729da374c51b75"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7ba2"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:26:49.873Z"
+      },
+      "_id": {
+        "$oid": "67df55495f729da374c51bb9"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7b64"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:26:57.114Z"
+      },
+      "_id": {
+        "$oid": "67df55515f729da374c51d5e"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7b64"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:26:57.228Z"
+      },
+      "_id": {
+        "$oid": "67df55515f729da374c51db8"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7b64"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:27:50.572Z"
+      },
+      "_id": {
+        "$oid": "67df55865f729da374c51e8d"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7b64"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:27:50.685Z"
+      },
+      "_id": {
+        "$oid": "67df55865f729da374c51ee9"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7af1"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:41:13.567Z"
+      },
+      "_id": {
+        "$oid": "67df58a95d750b6e281ac03e"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7af1"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:41:13.758Z"
+      },
+      "_id": {
+        "$oid": "67df58a95d750b6e281ac09c"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7af1"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:42:11.240Z"
+      },
+      "_id": {
+        "$oid": "67df58e35d750b6e281ac14e"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7af1"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:42:27.071Z"
+      },
+      "_id": {
+        "$oid": "67df58f35d750b6e281ac205"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7af1"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:56:05.957Z"
+      },
+      "_id": {
+        "$oid": "67df5c255d750b6e281ac2f6"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7af1"
+      },
+      "session_start": {
+        "$date": "2025-03-23T00:56:06.070Z"
+      },
+      "_id": {
+        "$oid": "67df5c265d750b6e281ac358"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7af1"
+      },
+      "session_start": {
+        "$date": "2025-03-23T01:11:48.317Z"
+      },
+      "_id": {
+        "$oid": "67df5fd45d750b6e281ac445"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7af1"
+      },
+      "session_start": {
+        "$date": "2025-03-23T01:11:48.461Z"
+      },
+      "_id": {
+        "$oid": "67df5fd45d750b6e281ac4a9"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7af1"
+      },
+      "session_start": {
+        "$date": "2025-03-23T01:20:07.026Z"
+      },
+      "_id": {
+        "$oid": "67df61c75d750b6e281ac5af"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7af1"
+      },
+      "session_start": {
+        "$date": "2025-03-23T01:20:07.132Z"
+      },
+      "_id": {
+        "$oid": "67df61c75d750b6e281ac615"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7af1"
+      },
+      "session_start": {
+        "$date": "2025-03-23T01:20:41.264Z"
+      },
+      "_id": {
+        "$oid": "67df61e95d750b6e281ac6d7"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7af1"
+      },
+      "session_start": {
+        "$date": "2025-03-23T01:24:14.124Z"
+      },
+      "_id": {
+        "$oid": "67df62be5d750b6e281ac79b"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7af1"
+      },
+      "session_start": {
+        "$date": "2025-03-23T01:25:38.662Z"
+      },
+      "_id": {
+        "$oid": "67df63125d750b6e281ac8a4"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7af1"
+      },
+      "session_start": {
+        "$date": "2025-03-23T01:25:38.788Z"
+      },
+      "_id": {
+        "$oid": "67df63125d750b6e281ac90e"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7af1"
+      },
+      "session_start": {
+        "$date": "2025-03-23T01:25:43.527Z"
+      },
+      "_id": {
+        "$oid": "67df63175d750b6e281aca13"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7af1"
+      },
+      "session_start": {
+        "$date": "2025-03-23T01:25:43.619Z"
+      },
+      "_id": {
+        "$oid": "67df63175d750b6e281aca7f"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7af1"
+      },
+      "session_start": {
+        "$date": "2025-03-23T01:25:57.750Z"
+      },
+      "_id": {
+        "$oid": "67df63255d750b6e281acb50"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7b0f"
+      },
+      "session_start": {
+        "$date": "2025-03-23T01:35:03.339Z"
+      },
+      "_id": {
+        "$oid": "67df65475d750b6e281acd16"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7b0f"
+      },
+      "session_start": {
+        "$date": "2025-03-23T01:35:03.478Z"
+      },
+      "_id": {
+        "$oid": "67df65475d750b6e281acd85"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7b0f"
+      },
+      "session_start": {
+        "$date": "2025-03-23T01:35:22.605Z"
+      },
+      "_id": {
+        "$oid": "67df655a5d750b6e281ace59"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7b0f"
+      },
+      "session_start": {
+        "$date": "2025-03-23T01:48:00.688Z"
+      },
+      "_id": {
+        "$oid": "67df68505d750b6e281acf70"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7b0f"
+      },
+      "session_start": {
+        "$date": "2025-03-23T01:48:00.782Z"
+      },
+      "_id": {
+        "$oid": "67df68505d750b6e281acfe2"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7ae8"
+      },
+      "session_start": {
+        "$date": "2025-04-10T23:14:28.588Z"
+      },
+      "_id": {
+        "$oid": "67f850d4165ed071a1a256a5"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7ae8"
+      },
+      "session_start": {
+        "$date": "2025-04-10T23:14:28.923Z"
+      },
+      "_id": {
+        "$oid": "67f850d4165ed071a1a25719"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7ae8"
+      },
+      "session_start": {
+        "$date": "2025-04-10T23:15:15.360Z"
+      },
+      "_id": {
+        "$oid": "67f85103165ed071a1a257fd"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7ae8"
+      },
+      "session_start": {
+        "$date": "2025-04-10T23:15:26.981Z"
+      },
+      "_id": {
+        "$oid": "67f8510e165ed071a1a25880"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7ae8"
+      },
+      "session_start": {
+        "$date": "2025-04-14T11:20:20.531Z"
+      },
+      "_id": {
+        "$oid": "67fcef74b8eb67a8790356e6"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7ae8"
+      },
+      "session_start": {
+        "$date": "2025-04-14T11:20:20.692Z"
+      },
+      "_id": {
+        "$oid": "67fcef74b8eb67a87903575f"
+      }
+    }
+  ],
+  "__v": 82,
+  "quizAttempts": [
+    {
+      "quiz": {
+        "$oid": "67df585b57b229e47a8b4315"
+      },
+      "date": {
+        "$date": "2025-04-10T23:15:12.263Z"
+      },
+      "score": 25,
+      "correct": 1,
+      "total": 4,
+      "nextReview": null,
+      "_id": {
+        "$oid": "67f85100165ed071a1a25787"
+      }
+    }
+  ]
+},
+{
+  "_id": {
+    "$oid": "67a11d6e32b92b6628783485"
+  },
+  "name": "de",
+  "email": "de@example.com",
+  "password": "$2a$10$tut8prPmuXU.Bjr8.Mc9iOieEZzEGAUPS0wIT6ZEz9NcK",
+  "role": "student",
+  "birthday": {
+    "$date": "2018-05-14T00:00:00.000Z"
+  },
+  "__t": "Student",
+  "studies": [
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7b91"
+      },
+      "session_start": {
+        "$date": "2025-02-16T09:27:26.095Z"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7af1"
+      },
+      "session_start": {
+        "$date": "2025-02-01T09:27:26.095Z"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7ae0"
+      },
+      "session_start": {
+        "$date": "2025-02-13T09:27:26.095Z"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7af4"
+      },
+      "session_start": {
+        "$date": "2025-02-01T09:27:26.095Z"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7b85"
+      },
+      "session_start": {
+        "$date": "2025-01-29T09:27:26.095Z"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7b6d"
+      },
+      "session_start": {
+        "$date": "2025-01-28T09:27:26.095Z"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7b79"
+      },
+      "session_start": {
+        "$date": "2025-02-06T09:27:26.095Z"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7af1"
+      },
+      "session_start": {
+        "$date": "2025-02-05T09:27:26.095Z"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7b0f"
+      },
+      "session_start": {
+        "$date": "2025-02-09T09:27:26.095Z"
+      }
+    },
+    {
+      "chapter": {
+        "$oid": "67ac735fa712bfbd143a7ac8"
+      },
+      "session_start": {
+        "$date": "2025-01-26T09:27:26.095Z"
+      }
+    }
+  ],
+  "__v": 0
+}]

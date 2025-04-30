@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "@tiptap/extension-image": "^2.11.7",
+    "@tiptap/react": "^2.11.7",
+    "@tiptap/starter-kit": "^2.11.7",
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
+    "mongoose": "^8.9.3",
+    "react-quill": "^2.0.0"
+  }
+}

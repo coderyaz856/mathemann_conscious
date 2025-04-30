@@ -1,0 +1,393 @@
+[{
+  "_id": {
+    "$oid": "67756887be52a9c12a14ab31"
+  },
+  "name": "Combinatorics",
+  "chapters": [
+    {
+      "$oid": "67756887be52a9c12a14ab2c"
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67756887be52a9c12a14ab32"
+  },
+  "name": "Probability",
+  "chapters": [
+    {
+      "$oid": "67756887be52a9c12a14ab2d"
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67756887be52a9c12a14ab33"
+  },
+  "name": "Linear Algebra",
+  "chapters": [
+    {
+      "$oid": "67756887be52a9c12a14ab2e"
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67756887be52a9c12a14ab34"
+  },
+  "name": "Calculus",
+  "chapters": [
+    {
+      "$oid": "67756887be52a9c12a14ab2f"
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67ac735fa712bfbd143a7ae6"
+  },
+  "name": "Elementary Mathematics",
+  "chapters": [
+    {
+      "$oid": "67ac735fa712bfbd143a7aaa"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7aad"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7ab0"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7ab3"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7ab6"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7ab9"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7abc"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7abf"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7ac2"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7ac5"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7ac8"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7acb"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7ace"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7ad1"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7ad4"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7ad7"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7ada"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7add"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7ae0"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7ae3"
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67ac735fa712bfbd143a7b24"
+  },
+  "name": "Pre-Algebra",
+  "chapters": [
+    {
+      "$oid": "67ac735fa712bfbd143a7ae8"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7aeb"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7aee"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7af1"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7af4"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7af7"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7afa"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7afd"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b00"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b03"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b06"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b09"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b0c"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b0f"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b12"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b15"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b18"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b1b"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b1e"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b21"
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67ac735fa712bfbd143a7b62"
+  },
+  "name": "Basic Geometry",
+  "chapters": [
+    {
+      "$oid": "67ac735fa712bfbd143a7b26"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b29"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b2c"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b2f"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b32"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b35"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b38"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b3b"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b3e"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b41"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b44"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b47"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b4a"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b4d"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b50"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b53"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b56"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b59"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b5c"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b5f"
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67ac735fa712bfbd143a7ba0"
+  },
+  "name": "Introduction to Statistics",
+  "chapters": [
+    {
+      "$oid": "67ac735fa712bfbd143a7b64"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b67"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b6a"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b6d"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b70"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b73"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b76"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b79"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b7c"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b7f"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b82"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b85"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b88"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b8b"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b8e"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b91"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b94"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b97"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b9a"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7b9d"
+    }
+  ],
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "67ac735fa712bfbd143a7bde"
+  },
+  "name": "Number Theory",
+  "chapters": [
+    {
+      "$oid": "67ac735fa712bfbd143a7ba2"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7ba5"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7ba8"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7bab"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7bae"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7bb1"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7bb4"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7bb7"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7bba"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7bbd"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7bc0"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7bc3"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7bc6"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7bc9"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7bcc"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7bcf"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7bd2"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7bd5"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7bd8"
+    },
+    {
+      "$oid": "67ac735fa712bfbd143a7bdb"
+    }
+  ],
+  "__v": 0
+}]
