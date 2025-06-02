@@ -1,63 +1,202 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import '../styles/QuizView.css';
-import { FaClock, FaCheck, FaTimes, FaLightbulb, FaBrain, FaRandom, 
-         FaExchangeAlt, FaPuzzlePiece, FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import { 
+    FaClock, FaCheck, FaTimes, FaLightbulb, FaBrain, FaRandom, 
+    FaExchangeAlt, FaPuzzlePiece, FaArrowLeft, FaArrowRight,
+    FaPlay, FaPause, FaRedo, FaBookmark, FaEye, FaEyeSlash,
+    FaChartLine, FaAward, FaQuestionCircle
+} from 'react-icons/fa';
 import QuizService from '../services/QuizService';
 import TechniqueBanner from './QuizComponents/TechniqueBanner';
 
+// Composant pour les notifications toast
+const Toast = ({ message, type, onClose }) => (
+    <div className={`toast toast-${type}`}>
+        <span>{message}</span>
+        <button onClick={onClose}>×</button>
+    </div>
+);
+
+// Composant pour la vue d'ensemble des questions
+const QuizOverview = ({ questions, answers, currentIndex, onNavigate, onClose }) => (
+    <div className="quiz-overview-modal">
+        <div className="quiz-overview-content">
+            <div className="overview-header">
+                <h3>Vue d'ensemble du quiz</h3>
+                <button onClick={onClose} className="close-btn">×</button>
+            </div>
+            <div className="overview-grid">
+                {questions.map((_, index) => (
+                    <button
+                        key={index}
+                        className={`overview-item ${
+                            index === currentIndex ? 'current' : ''
+                        } ${answers[index] ? 'answered' : 'unanswered'}`}
+                        onClick={() => {
+                            onNavigate(index);
+                            onClose();
+                        }}
+                    >
+                        {index + 1}
+                    </button>
+                ))}
+            </div>
+            <div className="overview-stats">
+                <span>{answers.filter(a => a).length} répondues</span>
+                <span>{questions.length - answers.filter(a => a).length} restantes</span>
+            </div>
+        </div>
+    </div>
+);
+
 const QuizView = () => {
+    // États principaux
     const [quiz, setQuiz] = useState(null);
     const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
     const [selectedAnswer, setSelectedAnswer] = useState('');
-    const [allAnswers, setAllAnswers] = useState([]); // New state to track all answers
+    const [allAnswers, setAllAnswers] = useState([]);
     const [quizCompleted, setQuizCompleted] = useState(false);
     const [quizResults, setQuizResults] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [timeLeft, setTimeLeft] = useState(null);
     const [chapterContent, setChapterContent] = useState(null);
-    const [mnemonicVisible, setMnemonicVisible] = useState(false);
+    
+    // États pour les nouvelles fonctionnalités
+    const [isPaused, setIsPaused] = useState(false);
+    const [showOverview, setShowOverview] = useState(false);
+    const [showHints, setShowHints] = useState(true);
+    const [bookmarkedQuestions, setBookmarkedQuestions] = useState(new Set());
+    const [confidenceLevel, setConfidenceLevel] = useState({});
+    const [startTime, setStartTime] = useState(null);
+    const [toasts, setToasts] = useState([]);
+    const [answerHistory, setAnswerHistory] = useState([]);
+    
     const { quizId } = useParams();
     const navigate = useNavigate();
 
-    // Initialize allAnswers array when quiz loads
+    // Fonctions utilitaires
+    const addToast = useCallback((message, type = 'info', duration = 3000) => {
+        const id = Date.now();
+        setToasts(prev => [...prev, { id, message, type }]);
+        setTimeout(() => {
+            setToasts(prev => prev.filter(toast => toast.id !== id));
+        }, duration);
+    }, []);
+
+    const removeToast = useCallback((id) => {
+        setToasts(prev => prev.filter(toast => toast.id !== id));
+    }, []);
+
+    // Sauvegarde automatique des progrès
+    const saveProgress = useCallback(async () => {
+        try {
+            const token = localStorage.getItem("token");
+            const progressData = {
+                currentQuestionIndex,
+                allAnswers,
+                timeLeft,
+                confidenceLevel,
+                bookmarkedQuestions: Array.from(bookmarkedQuestions)
+            };
+            
+            await axios.post(
+                `http://localhost:5000/api/quizzes/${quizId}/save-progress`,
+                progressData,
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+        } catch (err) {
+            console.error("Erreur lors de la sauvegarde:", err);
+        }
+    }, [quizId, currentQuestionIndex, allAnswers, timeLeft, confidenceLevel, bookmarkedQuestions]);
+
+    // Chargement des progrès sauvegardés
+    const loadProgress = useCallback(async () => {
+        try {
+            const token = localStorage.getItem("token");
+            const response = await axios.get(
+                `http://localhost:5000/api/quizzes/${quizId}/progress`,
+                { headers: { Authorization: `Bearer ${token}` } }
+            );
+            
+            if (response.data) {
+                const progress = response.data;
+                setCurrentQuestionIndex(progress.currentQuestionIndex || 0);
+                setAllAnswers(progress.allAnswers || []);
+                setTimeLeft(progress.timeLeft);
+                setConfidenceLevel(progress.confidenceLevel || {});
+                setBookmarkedQuestions(new Set(progress.bookmarkedQuestions || []));
+                setSelectedAnswer(progress.allAnswers?.[progress.currentQuestionIndex] || '');
+            }
+        } catch (err) {
+            console.error("Erreur lors du chargement des progrès:", err);
+        }
+    }, [quizId]);
+
+    // Métriques et analyses
+    const quizMetrics = useMemo(() => {
+        if (!quiz || !allAnswers.length) return null;
+        
+        const answeredCount = allAnswers.filter(a => a).length;
+        const progress = (answeredCount / quiz.questions.length) * 100;
+        const avgConfidence = Object.values(confidenceLevel).reduce((sum, conf) => sum + conf, 0) / 
+                             Object.keys(confidenceLevel).length || 0;
+        
+        return {
+            progress,
+            answeredCount,
+            totalQuestions: quiz.questions.length,
+            avgConfidence,
+            bookmarkedCount: bookmarkedQuestions.size,
+            timeSpent: startTime ? (Date.now() - startTime) / 1000 : 0
+        };
+    }, [quiz, allAnswers, confidenceLevel, bookmarkedQuestions, startTime]);
+
+    // Initialisation
     useEffect(() => {
         if (quiz) {
-            // Create an array with empty strings for each question
             setAllAnswers(new Array(quiz.questions.length).fill(''));
+            setStartTime(Date.now());
+            loadProgress();
         }
-    }, [quiz]);
+    }, [quiz, loadProgress]);
 
-    // Fetch quiz data
+    // Sauvegarde automatique
+    useEffect(() => {
+        if (quiz && !quizCompleted) {
+            const saveInterval = setInterval(saveProgress, 30000); // Sauvegarde toutes les 30 secondes
+            return () => clearInterval(saveInterval);
+        }
+    }, [quiz, quizCompleted, saveProgress]);
+
+    // Chargement du quiz
     useEffect(() => {
         const fetchQuiz = async () => {
             try {
                 const token = localStorage.getItem("token");
                 if (!token) {
-                    setError("Please login again");
+                    setError("Veuillez vous reconnecter");
                     navigate("/login");
                     return;
                 }
 
                 const response = await axios.get(`http://localhost:5000/api/quizzes/${quizId}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
+                    headers: { Authorization: `Bearer ${token}` }
                 });
 
                 setQuiz(response.data);
                 
-                // Set timer if quiz has a time limit
                 if (response.data.timeLimit) {
-                    setTimeLeft(response.data.timeLimit * 60); // convert minutes to seconds
+                    setTimeLeft(response.data.timeLimit * 60);
                 }
                 
                 setLoading(false);
+                addToast("Quiz chargé avec succès", "success");
             } catch (err) {
-                console.error("Error fetching quiz:", err);
-                setError(err.response?.data?.message || "Failed to load quiz");
+                console.error("Erreur lors du chargement:", err);
+                setError(err.response?.data?.message || "Échec du chargement du quiz");
                 setLoading(false);
                 
                 if (err.response?.status === 403 || err.response?.status === 401) {
@@ -68,56 +207,62 @@ const QuizView = () => {
         };
 
         fetchQuiz();
-    }, [quizId, navigate]);
+    }, [quizId, navigate, addToast]);
 
-    // Define handleSubmitQuiz with useCallback before using it in the effect
+    // Gestionnaire de soumission amélioré
     const handleSubmitQuiz = useCallback(async () => {
         try {
-            // Save the current answer
+            setLoading(true);
+            
             const finalAnswers = [...allAnswers];
             finalAnswers[currentQuestionIndex] = selectedAnswer;
             
-            // Check if all questions are answered
             const hasUnanswered = finalAnswers.some(answer => !answer);
             if (hasUnanswered) {
-                setError("Please answer all questions before submitting.");
-                // Find the first unanswered question and go to it
                 const unansweredIndex = finalAnswers.findIndex(answer => !answer);
                 setCurrentQuestionIndex(unansweredIndex);
+                addToast("Veuillez répondre à toutes les questions", "warning");
+                setLoading(false);
                 return;
             }
 
-            // Submit all answers to backend
             const token = localStorage.getItem("token");
+            const submissionData = {
+                answers: finalAnswers,
+                confidenceLevel,
+                timeSpent: quizMetrics?.timeSpent || 0,
+                bookmarkedQuestions: Array.from(bookmarkedQuestions)
+            };
+
             const response = await axios.post(
                 `http://localhost:5000/api/quizzes/${quizId}/attempt`,
-                { answers: finalAnswers },
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                }
+                submissionData,
+                { headers: { Authorization: `Bearer ${token}` } }
             );
 
             setQuizResults(response.data);
             setQuizCompleted(true);
+            addToast("Quiz soumis avec succès!", "success");
 
-            // If it's a spaced repetition quiz, schedule the next review
             if (quiz?.type === 'spaced-repetition') {
                 QuizService.trackSpacedRepetition(quizId, response.data.score);
             }
 
         } catch (err) {
-            console.error("Error submitting quiz:", err);
-            setError("Failed to submit quiz. Please try again.");
+            console.error("Erreur lors de la soumission:", err);
+            addToast("Échec de la soumission. Réessayez.", "error");
+        } finally {
+            setLoading(false);
         }
-    }, [allAnswers, currentQuestionIndex, selectedAnswer, quizId, quiz, setQuizResults, setQuizCompleted, setError, setCurrentQuestionIndex]);
+    }, [allAnswers, currentQuestionIndex, selectedAnswer, quizId, quiz, 
+        confidenceLevel, quizMetrics, bookmarkedQuestions, addToast]);
 
-    // Timer effect for timed quizzes
+    // Timer amélioré
     useEffect(() => {
-        if (timeLeft === null || quizCompleted) return;
+        if (timeLeft === null || quizCompleted || isPaused) return;
         
         if (timeLeft <= 0) {
+            addToast("Temps écoulé! Soumission automatique du quiz.", "warning");
             handleSubmitQuiz();
             return;
         }
@@ -127,114 +272,122 @@ const QuizView = () => {
         }, 1000);
         
         return () => clearTimeout(timerId);
-    }, [timeLeft, quizCompleted, handleSubmitQuiz]); // Add handleSubmitQuiz to dependencies
+    }, [timeLeft, quizCompleted, isPaused, handleSubmitQuiz, addToast]);
 
-    // Special handling for spaced repetition quizzes
-    useEffect(() => {
-        if (quiz?.type === 'spaced-repetition' && quizCompleted && quizResults) {
-            // Calculate next review date based on performance
-            const daysToAdd = calculateSpacedRepetitionInterval(quizResults.score);
-            const nextReview = new Date();
-            nextReview.setDate(nextReview.getDate() + daysToAdd);
+    // Gestion des réponses améliorée
+    const handleAnswerSelect = useCallback((answer) => {
+        // Enregistrer l'historique des réponses
+        setAnswerHistory(prev => [...prev, {
+            questionIndex: currentQuestionIndex,
+            previousAnswer: selectedAnswer,
+            newAnswer: answer,
+            timestamp: Date.now()
+        }]);
+
+        setSelectedAnswer(answer);
+        
+        const updatedAnswers = [...allAnswers];
+        updatedAnswers[currentQuestionIndex] = answer;
+        setAllAnswers(updatedAnswers);
+        
+        addToast("Réponse enregistrée", "success", 1000);
+    }, [currentQuestionIndex, selectedAnswer, allAnswers, addToast]);
+
+    // Navigation améliorée
+    const navigateToQuestion = useCallback((index) => {
+        if (index >= 0 && index < quiz.questions.length) {
+            const updatedAnswers = [...allAnswers];
+            updatedAnswers[currentQuestionIndex] = selectedAnswer;
+            setAllAnswers(updatedAnswers);
             
-            // Store in local storage for scheduling future reviews
-            QuizService.trackSpacedRepetition(quizId, quizResults.score);
-            
-            console.log(`Next review scheduled for: ${nextReview.toLocaleDateString()}`);
+            setCurrentQuestionIndex(index);
+            setSelectedAnswer(updatedAnswers[index] || '');
         }
-    }, [quiz, quizCompleted, quizResults, quizId]);
+    }, [quiz, allAnswers, currentQuestionIndex, selectedAnswer]);
 
-    // Add new effect to fetch associated chapter content for context
+    const handleNextQuestion = useCallback(() => {
+        if (currentQuestionIndex < quiz.questions.length - 1) {
+            navigateToQuestion(currentQuestionIndex + 1);
+        }
+    }, [currentQuestionIndex, quiz, navigateToQuestion]);
+
+    const handlePreviousQuestion = useCallback(() => {
+        if (currentQuestionIndex > 0) {
+            navigateToQuestion(currentQuestionIndex - 1);
+        }
+    }, [currentQuestionIndex, navigateToQuestion]);
+
+    // Gestion des signets
+    const toggleBookmark = useCallback(() => {
+        setBookmarkedQuestions(prev => {
+            const newBookmarks = new Set(prev);
+            if (newBookmarks.has(currentQuestionIndex)) {
+                newBookmarks.delete(currentQuestionIndex);
+                addToast("Signet retiré", "info");
+            } else {
+                newBookmarks.add(currentQuestionIndex);
+                addToast("Question mise en signet", "success");
+            }
+            return newBookmarks;
+        });
+    }, [currentQuestionIndex, addToast]);
+
+    // Gestion du niveau de confiance
+    const setQuestionConfidence = useCallback((level) => {
+        setConfidenceLevel(prev => ({
+            ...prev,
+            [currentQuestionIndex]: level
+        }));
+    }, [currentQuestionIndex]);
+
+    // Raccourcis clavier
     useEffect(() => {
-        const fetchChapterContent = async () => {
-            if (!quiz) return;
+        const handleKeyPress = (e) => {
+            if (quizCompleted) return;
             
-            try {
-                const token = localStorage.getItem("token");
-                const response = await axios.get(`http://localhost:5000/api/chapters/${quiz.chapter}`, {
-                    headers: {
-                        Authorization: `Bearer ${token}`
+            switch(e.key) {
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    handlePreviousQuestion();
+                    break;
+                case 'ArrowRight':
+                    e.preventDefault();
+                    handleNextQuestion();
+                    break;
+                case ' ':
+                    e.preventDefault();
+                    setIsPaused(prev => !prev);
+                    break;
+                case 'b':
+                    e.preventDefault();
+                    toggleBookmark();
+                    break;
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                    e.preventDefault();
+                    const optionIndex = parseInt(e.key) - 1;
+                    const currentQuestion = quiz?.questions[currentQuestionIndex];
+                    if (currentQuestion?.options[optionIndex]) {
+                        handleAnswerSelect(currentQuestion.options[optionIndex]);
                     }
-                });
-                
-                setChapterContent(response.data);
-            } catch (err) {
-                console.error("Error fetching chapter content:", err);
-                // Non-blocking error - we can still show the quiz
+                    break;
             }
         };
-        
-        fetchChapterContent();
-    }, [quiz]);
 
-    // Toggle mnemonic device visibility based on quiz type
-    useEffect(() => {
-        if (quiz?.type === 'encoding') {
-            // Show mnemonic tip after a short delay
-            const timer = setTimeout(() => setMnemonicVisible(true), 2000);
-            return () => clearTimeout(timer);
-        }
-    }, [quiz, currentQuestionIndex]);
+        window.addEventListener('keydown', handleKeyPress);
+        return () => window.removeEventListener('keydown', handleKeyPress);
+    }, [quizCompleted, handlePreviousQuestion, handleNextQuestion, toggleBookmark, 
+        quiz, currentQuestionIndex, handleAnswerSelect]);
 
+    // Fonctions utilitaires pour le rendu
     const formatTime = (seconds) => {
         const mins = Math.floor(seconds / 60);
         const secs = seconds % 60;
         return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
     };
 
-    // Update to store answer in the allAnswers array
-    const handleAnswerSelect = (answer) => {
-        setSelectedAnswer(answer);
-        
-        // Update the answer in our complete answers array
-        const updatedAnswers = [...allAnswers];
-        updatedAnswers[currentQuestionIndex] = answer;
-        setAllAnswers(updatedAnswers);
-    };
-
-    const handleNextQuestion = () => {
-        if (currentQuestionIndex < quiz.questions.length - 1) {
-            // Save current answer before moving to next question
-            const updatedAnswers = [...allAnswers];
-            updatedAnswers[currentQuestionIndex] = selectedAnswer;
-            setAllAnswers(updatedAnswers);
-            
-            // Move to next question
-            setCurrentQuestionIndex(currentQuestionIndex + 1);
-            // Set selected answer to previously stored answer for the next question (if any)
-            setSelectedAnswer(updatedAnswers[currentQuestionIndex + 1]);
-            setMnemonicVisible(false);
-        }
-    };
-
-    const handlePreviousQuestion = () => {
-        if (currentQuestionIndex > 0) {
-            // Save current answer before moving to previous question
-            const updatedAnswers = [...allAnswers];
-            updatedAnswers[currentQuestionIndex] = selectedAnswer;
-            setAllAnswers(updatedAnswers);
-            
-            // Move to previous question
-            setCurrentQuestionIndex(currentQuestionIndex - 1);
-            // Set selected answer to previously stored answer for the previous question
-            setSelectedAnswer(updatedAnswers[currentQuestionIndex - 1]);
-        }
-    };
-
-    // Helper functions for spaced repetition
-    const calculateSpacedRepetitionInterval = (score) => {
-        if (score >= 90) return 21; // 3 weeks
-        if (score >= 80) return 14; // 2 weeks
-        if (score >= 70) return 7;  // 1 week
-        if (score >= 60) return 3;  // 3 days
-        return 1; // 1 day
-    };
-
-    const handleBackToChapter = () => {
-        navigate(`/chapter/${quiz.chapter}`);
-    };
-
-    // Get the appropriate icon for quiz type
     const getQuizTypeIcon = () => {
         switch(quiz?.type) {
             case 'recall': return <FaBrain />;
@@ -247,87 +400,79 @@ const QuizView = () => {
         }
     };
 
-    // Render different instructions based on quiz type
     const renderQuizTypeInstructions = () => {
-        switch(quiz.type) {
-            case 'recall':
-                return "Test your knowledge by answering the questions from memory.";
-            case 'spaced-repetition':
-                return "This quiz helps reinforce knowledge through repeated exposure. You'll see these concepts again in the future.";
-            case 'interleaved':
-                return "This quiz mixes different concepts to strengthen your ability to select the right approach for each problem.";
-            case 'encoding':
-                return "Focus on creating mental connections to help remember these concepts long-term.";
-            case 'chunking':
-                return "Notice how complex topics are broken down into manageable pieces.";
-            case 'contextual-variation':
-                return "Notice how the same concepts appear in different contexts and applications.";
-            default:
-                return "Answer each question to the best of your ability.";
-        }
+        const instructions = {
+            'recall': "Testez vos connaissances en répondant aux questions de mémoire.",
+            'spaced-repetition': "Ce quiz renforce les connaissances par exposition répétée. Vous reverrez ces concepts.",
+            'interleaved': "Ce quiz mélange différents concepts pour renforcer votre capacité de sélection.",
+            'encoding': "Concentrez-vous sur la création de connexions mentales pour une mémorisation long terme.",
+            'chunking': "Remarquez comment les sujets complexes sont décomposés en parties gérables.",
+            'contextual-variation': "Observez comment les mêmes concepts apparaissent dans différents contextes."
+        };
+        return instructions[quiz?.type] || "Répondez du mieux que vous pouvez à chaque question.";
     };
 
-    // Enhanced quiz results with technique-specific feedback
-    const renderQuizResults = () => {
-        if (!quizCompleted || !quizResults) return null;
-        
+    // États de chargement et d'erreur
+    if (loading) {
+        return (
+            <div className="quiz-loading">
+                <div className="spinner"></div>
+                <p>Chargement du quiz...</p>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className="quiz-error">
+                <h2>Erreur</h2>
+                <p>{error}</p>
+                <button onClick={() => {
+                    setError(null);
+                    if (quiz) return;
+                    navigate(-1);
+                }}>
+                    {quiz ? "Continuer" : "Retour"}
+                </button>
+            </div>
+        );
+    }
+
+    if (quizCompleted) {
         return (
             <div className="quiz-results-container">
-                <h2>Quiz Results</h2>
+                <h2>Résultats du Quiz</h2>
                 
-                {/* Score card */}
                 <div className="score-card">
                     <div className="score-percentage">{Math.round(quizResults.score)}%</div>
                     <p className="score-details">
-                        You answered {quizResults.correct} out of {quizResults.total} questions correctly
+                        Vous avez répondu correctement à {quizResults.correct} questions sur {quizResults.total}
                     </p>
+                    <div className="quiz-stats">
+                        <div className="stat">
+                            <FaClock />
+                            <span>Temps: {Math.round(quizMetrics?.timeSpent || 0)}s</span>
+                        </div>
+                        <div className="stat">
+                            <FaChartLine />
+                            <span>Confiance: {Math.round(quizMetrics?.avgConfidence || 0)}%</span>
+                        </div>
+                        <div className="stat">
+                            <FaBookmark />
+                            <span>Signets: {quizMetrics?.bookmarkedCount || 0}</span>
+                        </div>
+                    </div>
                 </div>
-                
-                {/* Technique-specific feedback */}
-                {quiz.type === 'spaced-repetition' && (
-                    <div className="technique-feedback spaced-repetition">
-                        <h3><FaClock /> Spaced Repetition</h3>
-                        <p>To optimize your learning, we'll remind you to review this material again in 
-                           {calculateSpacedRepetitionInterval(quizResults.score)} days.</p>
-                        <p>Spaced repetition helps move knowledge into long-term memory by reviewing just before you're likely to forget.</p>
-                    </div>
-                )}
-                
-                {quiz.type === 'encoding' && (
-                    <div className="technique-feedback encoding">
-                        <h3><FaLightbulb /> Encoding Techniques</h3>
-                        <p>The mnemonics and memory techniques in this quiz help you create stronger neural connections for better recall.</p>
-                        <p>Try to use these memory techniques with other subjects too!</p>
-                    </div>
-                )}
-                
-                {quiz.type === 'interleaved' && (
-                    <div className="technique-feedback interleaved">
-                        <h3><FaRandom /> Interleaved Practice</h3>
-                        <p>Mixing different types of problems strengthens your ability to select the right approach for each situation.</p>
-                        <p>This enhanced discrimination leads to better long-term retention and application.</p>
-                    </div>
-                )}
-                
-                {quiz.type === 'contextual-variation' && (
-                    <div className="technique-feedback contextual">
-                        <h3><FaExchangeAlt /> Contextual Variation</h3>
-                        <p>Seeing concepts in different contexts helps you form more flexible and robust understanding.</p>
-                        <p>This flexibility will help you apply these concepts to novel situations in the future.</p>
-                    </div>
-                )}
-                
-                {quiz.type === 'chunking' && (
-                    <div className="technique-feedback chunking">
-                        <h3><FaPuzzlePiece /> Chunking</h3>
-                        <p>Breaking down complex topics into smaller pieces makes them easier to understand and remember.</p>
-                        <p>This technique reduces cognitive load and helps you master difficult concepts step by step.</p>
-                    </div>
-                )}
-                
-                {/* Questions review */}
+
+                {/* Feedback technique spécifique */}
+                <div className={`technique-feedback ${quiz.type}`}>
+                    <h3>{getQuizTypeIcon()} {quiz.type.replace('-', ' ')}</h3>
+                    <p>Technique d'apprentissage appliquée avec succès!</p>
+                </div>
+
+                {/* Révision des questions */}
                 <div className="questions-review">
-                    <h3>Review Your Answers</h3>
+                    <h3>Révision de vos réponses</h3>
                     {quizResults.results.map((result, index) => (
                         <div 
                             key={index} 
@@ -339,105 +484,32 @@ const QuizView = () => {
                                     <FaTimes className="incorrect-icon" />
                                 }
                                 <h4>Question {index + 1}</h4>
+                                {bookmarkedQuestions.has(index) && <FaBookmark className="bookmark-icon" />}
                             </div>
                             <p className="question-text">{quiz.questions[index].question}</p>
                             <div className="answer-review">
-                                <p>Your answer: <strong>{result.userAnswer}</strong></p>
+                                <p>Votre réponse: <strong>{result.userAnswer}</strong></p>
                                 {!result.isCorrect && (
-                                    <p>Correct answer: <strong>{result.correctAnswer}</strong></p>
+                                    <p>Réponse correcte: <strong>{result.correctAnswer}</strong></p>
+                                )}
+                                {confidenceLevel[index] && (
+                                    <p>Niveau de confiance: {confidenceLevel[index]}%</p>
                                 )}
                             </div>
-                            {result.explanation && (
-                                <div className="answer-explanation">
-                                    <FaLightbulb className="explanation-icon" />
-                                    <p>{result.explanation}</p>
-                                </div>
-                            )}
                         </div>
                     ))}
                 </div>
-                
-                {/* Next steps */}
+
                 <div className="next-steps">
-                    <button 
-                        className="continue-btn"
-                        onClick={handleBackToChapter}
-                    >
-                        Back to Chapter
+                    <button className="continue-btn" onClick={() => navigate(`/chapter/${quiz.chapter}`)}>
+                        Retour au chapitre
+                    </button>
+                    <button className="continue-btn secondary" onClick={() => navigate('/dashboard')}>
+                        Tableau de bord
                     </button>
                 </div>
             </div>
         );
-    };
-
-    // Render mnemonics or memory aid for encoding-type questions
-    const renderEncodingAid = () => {
-        if (!mnemonicVisible || quiz.type !== 'encoding') return null;
-        
-        const currentQuestion = quiz.questions[currentQuestionIndex];
-        let mnemonicTip = "Create a mental image or use a mnemonic to remember this concept.";
-        
-        // Look for specific mnemonic in chapter content if available
-        if (chapterContent && chapterContent.mnemonicDevices) {
-            // Find a relevant mnemonic by checking for keywords from the question
-            const questionWords = currentQuestion.question.toLowerCase().split(' ');
-            const relevantMnemonic = chapterContent.mnemonicDevices.find(mnemonic => 
-                questionWords.some(word => word.length > 4 && mnemonic.toLowerCase().includes(word))
-            );
-            
-            if (relevantMnemonic) {
-                mnemonicTip = relevantMnemonic;
-            }
-        }
-        
-        return (
-            <div className="technique-tip">
-                <h4><FaLightbulb /> Memory Tip</h4>
-                <p>{mnemonicTip}</p>
-            </div>
-        );
-    };
-
-    // Render contextual aid for contextual-variation type quizzes
-    const renderContextualAid = () => {
-        if (quiz.type !== 'contextual-variation') return null;
-        
-        return (
-            <div className="technique-tip">
-                <h4><FaExchangeAlt /> Context Tip</h4>
-                <p>Notice how this problem applies the concept in a different context. 
-                   Try to identify the core mathematical principle being used.</p>
-            </div>
-        );
-    };
-
-    if (loading) {
-        return (
-            <div className="quiz-loading">
-                <div className="spinner"></div>
-                <p>Loading quiz...</p>
-            </div>
-        );
-    }
-
-    if (error) {
-        return (
-            <div className="quiz-error">
-                <h2>Error</h2>
-                <p>{error}</p>
-                <button onClick={() => {
-                    setError(null);
-                    if (quiz) return; // If quiz loaded, just clear error
-                    navigate(-1); // Otherwise go back
-                }}>
-                    {quiz ? "Continue" : "Go Back"}
-                </button>
-            </div>
-        );
-    }
-
-    if (quizCompleted) {
-        return renderQuizResults();
     }
 
     const currentQuestion = quiz.questions[currentQuestionIndex];
@@ -445,11 +517,61 @@ const QuizView = () => {
 
     return (
         <div className="quiz-container">
-            {/* Banner explaining the learning technique being used */}
+            {/* Notifications Toast */}
+            <div className="toast-container">
+                {toasts.map(toast => (
+                    <Toast
+                        key={toast.id}
+                        message={toast.message}
+                        type={toast.type}
+                        onClose={() => removeToast(toast.id)}
+                    />
+                ))}
+            </div>
+
+            {/* Modal de vue d'ensemble */}
+            {showOverview && (
+                <QuizOverview
+                    questions={quiz.questions}
+                    answers={allAnswers}
+                    currentIndex={currentQuestionIndex}
+                    onNavigate={navigateToQuestion}
+                    onClose={() => setShowOverview(false)}
+                />
+            )}
+
+            {/* Banner de technique */}
             <TechniqueBanner type={quiz.type} />
             
+            {/* Header du quiz */}
             <div className="quiz-header">
-                <h2>{quiz.title}</h2>
+                <div className="quiz-title-row">
+                    <h2>{quiz.title}</h2>
+                    <div className="quiz-actions">
+                        <button 
+                            className="action-btn"
+                            onClick={() => setShowOverview(true)}
+                            title="Vue d'ensemble"
+                        >
+                            <FaQuestionCircle />
+                        </button>
+                        <button 
+                            className="action-btn"
+                            onClick={() => setShowHints(!showHints)}
+                            title={showHints ? "Masquer les indices" : "Afficher les indices"}
+                        >
+                            {showHints ? <FaEyeSlash /> : <FaEye />}
+                        </button>
+                        <button 
+                            className="action-btn"
+                            onClick={() => setIsPaused(!isPaused)}
+                            title={isPaused ? "Reprendre" : "Pause"}
+                        >
+                            {isPaused ? <FaPlay /> : <FaPause />}
+                        </button>
+                    </div>
+                </div>
+                
                 <p className="quiz-description">{quiz.description}</p>
                 
                 <div className="quiz-metadata">
@@ -457,9 +579,14 @@ const QuizView = () => {
                         {getQuizTypeIcon()} {quiz.type.replace('-', ' ')}
                     </span>
                     {timeLeft !== null && (
-                        <div className="quiz-timer">
+                        <div className={`quiz-timer ${isPaused ? 'paused' : ''}`}>
                             <FaClock className="timer-icon" />
                             <span className="time-remaining">{formatTime(timeLeft)}</span>
+                        </div>
+                    )}
+                    {quizMetrics && (
+                        <div className="quiz-metrics">
+                            <span>{Math.round(quizMetrics.progress)}% complété</span>
                         </div>
                     )}
                 </div>
@@ -469,27 +596,34 @@ const QuizView = () => {
                 </p>
             </div>
             
+            {/* Barre de progression */}
             <div className="quiz-progress">
                 <div 
                     className="progress-bar" 
                     style={{ width: `${progress}%` }}
                 ></div>
-                <span className="progress-text">Question {currentQuestionIndex + 1} of {quiz.questions.length}</span>
+                <span className="progress-text">
+                    Question {currentQuestionIndex + 1} sur {quiz.questions.length}
+                </span>
             </div>
             
+            {/* Container de question */}
             <div className="question-container">
-                <h3 className="question-text">{currentQuestion.question}</h3>
-                
-                {/* Render encoding aid for memory techniques */}
-                {renderEncodingAid()}
-                
-                {/* Render contextual aid for contextual variation */}
-                {renderContextualAid()}
+                <div className="question-header">
+                    <h3 className="question-text">{currentQuestion.question}</h3>
+                    <button 
+                        className={`bookmark-btn ${bookmarkedQuestions.has(currentQuestionIndex) ? 'active' : ''}`}
+                        onClick={toggleBookmark}
+                        title="Marquer cette question"
+                    >
+                        <FaBookmark />
+                    </button>
+                </div>
                 
                 {currentQuestion.imageUrl && (
                     <img 
                         src={currentQuestion.imageUrl} 
-                        alt="Question visual" 
+                        alt="Visuel de la question" 
                         className="question-image" 
                     />
                 )}
@@ -508,17 +642,41 @@ const QuizView = () => {
                         </div>
                     ))}
                 </div>
+
+                {/* Niveau de confiance */}
+                <div className="confidence-selector">
+                    <label>Niveau de confiance:</label>
+                    <div className="confidence-buttons">
+                        {[25, 50, 75, 100].map(level => (
+                            <button
+                                key={level}
+                                className={`confidence-btn ${
+                                    confidenceLevel[currentQuestionIndex] === level ? 'active' : ''
+                                }`}
+                                onClick={() => setQuestionConfidence(level)}
+                            >
+                                {level}%
+                            </button>
+                        ))}
+                    </div>
+                </div>
             </div>
             
+            {/* Navigation du quiz */}
             <div className="quiz-navigation">
-                {currentQuestionIndex > 0 && (
-                    <button 
-                        onClick={handlePreviousQuestion}
-                        className="prev-button"
-                    >
-                        <FaArrowLeft /> Previous
-                    </button>
-                )}
+                <button 
+                    onClick={handlePreviousQuestion}
+                    className="prev-button"
+                    disabled={currentQuestionIndex === 0}
+                >
+                    <FaArrowLeft /> Précédent
+                </button>
+                
+                <div className="nav-center">
+                    <span className="keyboard-hint">
+                        Utilisez ← → pour naviguer, Espace pour pause, B pour signet
+                    </span>
+                </div>
                 
                 {currentQuestionIndex < quiz.questions.length - 1 ? (
                     <button 
@@ -526,22 +684,25 @@ const QuizView = () => {
                         className="next-button"
                         disabled={!selectedAnswer}
                     >
-                        Next <FaArrowRight />
+                        Suivant <FaArrowRight />
                     </button>
                 ) : (
                     <button 
                         onClick={handleSubmitQuiz}
                         className="next-button submit-button"
-                        disabled={!selectedAnswer}
+                        disabled={!selectedAnswer || loading}
                     >
-                        Submit Quiz
+                        {loading ? 'Soumission...' : 'Soumettre le Quiz'}
                     </button>
                 )}
             </div>
             
-            {/* Add a progress indicator showing answered/total questions */}
+            {/* Statut de completion */}
             <div className="quiz-completion-status">
-                {allAnswers.filter(a => a).length} of {quiz.questions.length} questions answered
+                <div className="completion-details">
+                    <span>{allAnswers.filter(a => a).length} sur {quiz.questions.length} questions répondues</span>
+                    <span>{bookmarkedQuestions.size} question(s) en signet</span>
+                </div>
             </div>
         </div>
     );
