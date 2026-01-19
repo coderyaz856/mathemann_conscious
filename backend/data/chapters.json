@@ -1,0 +1,54 @@
+[
+  {
+    "_id": "chapter-algebra",
+    "name": "Algèbre - Niveau Lycée",
+    "summary": "L'algèbre est une branche des mathématiques qui étudie les structures algébriques, les équations et les relations entre variables.",
+    "content": "# Algèbre - Cours Complet\n\n## Introduction à l'Algèbre\n\nL'algèbre est une branche des mathématiques qui étudie les structures algébriques, les équations et les relations entre variables.\n\n## 1. Les Équations du Premier Degré\n\n### Définition\nUne équation du premier degré est une équation de la forme : **ax + b = 0** où a ≠ 0\n\n### Résolution\nPour résoudre une équation du premier degré :\n1. Isoler les termes en x d'un côté\n2. Isoler les constantes de l'autre côté\n3. Diviser par le coefficient de x\n\n**Exemple :** Résoudre 3x + 5 = 14\n- 3x = 14 - 5\n- 3x = 9\n- x = 3\n\n## 2. Les Systèmes d'Équations\n\n### Système de deux équations à deux inconnues\n\n**Forme générale :**\n```\nax + by = c\ndx + ey = f\n```\n\n### Méthodes de résolution\n\n#### a) Méthode par substitution\n1. Exprimer une variable en fonction de l'autre\n2. Substituer dans la deuxième équation\n3. Résoudre l'équation obtenue\n\n#### b) Méthode par combinaison\n1. Multiplier les équations pour égaliser un coefficient\n2. Additionner ou soustraire les équations\n3. Résoudre pour une variable, puis l'autre\n\n**Exemple pratique :**\n```\n2x + y = 7\nx - y = 2\n```\nPar addition : 3x = 9, donc x = 3 et y = 1\n\n## 3. Les Polynômes\n\n### Définition\nUn polynôme est une expression de la forme :\n**P(x) = aₙxⁿ + aₙ₋₁xⁿ⁻¹ + ... + a₁x + a₀**\n\n### Opérations sur les polynômes\n\n#### Addition et soustraction\nOn additionne ou soustrait les coefficients des termes de même degré.\n\n#### Multiplication\nOn utilise la distributivité : (a + b)(c + d) = ac + ad + bc + bd\n\n**Identités remarquables :**\n- (a + b)² = a² + 2ab + b²\n- (a - b)² = a² - 2ab + b²\n- (a + b)(a - b) = a² - b²\n\n## 4. Les Équations du Second Degré\n\n### Forme canonique\nax² + bx + c = 0 (avec a ≠ 0)\n\n### Discriminant\nΔ = b² - 4ac\n\n### Solutions\n- Si Δ > 0 : deux solutions réelles distinctes\n  - x₁ = (-b - √Δ) / 2a\n  - x₂ = (-b + √Δ) / 2a\n\n- Si Δ = 0 : une solution double\n  - x = -b / 2a\n\n- Si Δ < 0 : pas de solution réelle\n\n**Exemple :** Résoudre x² - 5x + 6 = 0\n- Δ = 25 - 24 = 1\n- x₁ = (5 - 1) / 2 = 2\n- x₂ = (5 + 1) / 2 = 3\n\n## 5. Factorisation\n\n### Techniques de factorisation\n\n1. **Facteur commun** : ab + ac = a(b + c)\n\n2. **Identités remarquables** :\n   - a² - b² = (a + b)(a - b)\n   - a² + 2ab + b² = (a + b)²\n\n3. **Trinôme du second degré** :\n   - Si ax² + bx + c a pour racines x₁ et x₂\n   - Alors ax² + bx + c = a(x - x₁)(x - x₂)\n\n## 6. Les Inéquations\n\n### Règles importantes\n- On peut additionner ou soustraire un même nombre aux deux membres\n- On peut multiplier ou diviser par un nombre **positif** sans changer le sens\n- Si on multiplie ou divise par un nombre **négatif**, on inverse le sens de l'inégalité\n\n**Exemple :**\n- 2x - 3 > 5\n- 2x > 8\n- x > 4",
+    "sections": [
+      { "title": "Introduction à l'Algèbre", "content": "L'algèbre est une branche des mathématiques qui étudie les structures algébriques, les équations et les relations entre variables.", "type": "theory", "order": 1 },
+      { "title": "Les Équations du Premier Degré", "content": "Une équation du premier degré est une équation de la forme : ax + b = 0 où a ≠ 0. Pour résoudre: 1) Isoler les termes en x d'un côté, 2) Isoler les constantes de l'autre côté, 3) Diviser par le coefficient de x.", "type": "theory", "order": 2 },
+      { "title": "Les Systèmes d'Équations", "content": "Système de deux équations à deux inconnues. Méthodes: substitution et combinaison.", "type": "theory", "order": 3 },
+      { "title": "Les Polynômes", "content": "Un polynôme est une expression de la forme: P(x) = aₙxⁿ + aₙ₋₁xⁿ⁻¹ + ... + a₁x + a₀", "type": "theory", "order": 4 },
+      { "title": "Les Équations du Second Degré", "content": "Forme canonique: ax² + bx + c = 0. Discriminant: Δ = b² - 4ac", "type": "theory", "order": 5 },
+      { "title": "Factorisation", "content": "Techniques: Facteur commun, Identités remarquables, Trinôme du second degré", "type": "theory", "order": 6 },
+      { "title": "Les Inéquations", "content": "Règles pour résoudre les inéquations avec attention au signe des multiplicateurs.", "type": "theory", "order": 7 }
+    ],
+    "quizzes": ["quiz-algebra"],
+    "difficulty": "intermediate",
+    "estimatedDuration": 45,
+    "createdAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "chapter-geometry",
+    "name": "Géométrie - Niveau Lycée",
+    "summary": "La géométrie est l'étude des formes, des figures, de l'espace et de leurs propriétés.",
+    "content": "# Géométrie - Cours Complet\n\n## Introduction à la Géométrie\n\nLa géométrie est l'étude des formes, des figures, de l'espace et de leurs propriétés.\n\n## 1. Les Figures Planes\n\n### Le Triangle\n\n#### Définitions\n- **Triangle** : polygone à trois côtés\n- **Périmètre** : P = a + b + c\n- **Aire** : A = (base × hauteur) / 2\n\n#### Types de triangles\n1. **Triangle équilatéral** : 3 côtés égaux, 3 angles de 60°\n2. **Triangle isocèle** : 2 côtés égaux\n3. **Triangle rectangle** : un angle de 90°\n4. **Triangle quelconque** : aucune propriété particulière\n\n#### Théorème de Pythagore\nDans un triangle rectangle de côtés a, b et hypoténuse c :\n**c² = a² + b²**\n\n### Le Cercle\n\n#### Formules essentielles\n- **Périmètre** : P = 2πr ou P = πd\n- **Aire** : A = πr²\n- **Longueur d'arc** : L = (θ/360°) × 2πr\n\n### Les Quadrilatères\n\n#### Le Carré\n- 4 côtés égaux, 4 angles droits\n- Périmètre : P = 4c\n- Aire : A = c²\n\n#### Le Rectangle\n- Côtés opposés égaux, 4 angles droits\n- Périmètre : P = 2(L + l)\n- Aire : A = L × l\n\n## 2. La Trigonométrie\n\n### Les Rapports Trigonométriques\n\nDans un triangle rectangle :\n- **Sinus** : sin(θ) = côté opposé / hypoténuse\n- **Cosinus** : cos(θ) = côté adjacent / hypoténuse\n- **Tangente** : tan(θ) = côté opposé / côté adjacent\n\n### Relations trigonométriques\n- sin²(θ) + cos²(θ) = 1\n- tan(θ) = sin(θ) / cos(θ)\n\n## 3. Les Vecteurs\n\n### Définition\nUn vecteur est défini par : direction, sens, norme (longueur)\n\n### Coordonnées\nVecteur v⃗ = (x, y)\n- Norme : ||v⃗|| = √(x² + y²)\n\n## 4. Géométrie dans l'Espace\n\n### Le Cube\n- **Volume** : V = a³\n- **Aire totale** : A = 6a²\n\n### Le Cylindre\n- **Volume** : V = πr²h\n- **Aire latérale** : A = 2πrh\n\n### La Sphère\n- **Volume** : V = (4/3)πr³\n- **Aire** : A = 4πr²",
+    "sections": [
+      { "title": "Les Figures Planes", "content": "Triangles, cercles, et quadrilatères avec leurs formules.", "type": "theory", "order": 1 },
+      { "title": "La Trigonométrie", "content": "Sinus, cosinus, tangente et leurs relations.", "type": "theory", "order": 2 },
+      { "title": "Les Vecteurs", "content": "Définition, coordonnées et opérations sur les vecteurs.", "type": "theory", "order": 3 },
+      { "title": "Géométrie dans l'Espace", "content": "Cube, cylindre, sphère et leurs formules.", "type": "theory", "order": 4 }
+    ],
+    "quizzes": ["quiz-geometry"],
+    "difficulty": "intermediate",
+    "estimatedDuration": 50,
+    "createdAt": "2025-01-01T00:00:00.000Z"
+  },
+  {
+    "_id": "chapter-statistics",
+    "name": "Statistiques et Probabilités",
+    "summary": "Les statistiques permettent de collecter, organiser, analyser et interpréter des données. Les probabilités étudient le hasard et les phénomènes aléatoires.",
+    "content": "# Statistiques et Probabilités\n\n## Introduction\n\nLes statistiques permettent de collecter, organiser, analyser et interpréter des données. Les probabilités étudient le hasard et les phénomènes aléatoires.\n\n## 1. Statistiques Descriptives\n\n### Vocabulaire de base\n- **Population** : ensemble étudié\n- **Échantillon** : sous-ensemble de la population\n- **Variable** : caractéristique étudiée\n\n## 2. Paramètres de Position\n\n### Moyenne\n**Formule** : x̄ = (x₁ + x₂ + ... + xₙ) / n\n\n### Médiane\nValeur qui partage les données ordonnées en deux groupes égaux.\n\n### Mode\nValeur la plus fréquente dans une série\n\n## 3. Paramètres de Dispersion\n\n### Étendue\nÉtendue = Maximum - Minimum\n\n### Variance\n**Variance** : V(X) = [(x₁ - x̄)² + (x₂ - x̄)² + ... + (xₙ - x̄)²] / n\n\n### Écart-type\n**Écart-type** : σ = √V(X)\n\n## 4. Probabilités - Bases\n\n### Vocabulaire\n- **Expérience aléatoire** : expérience dont le résultat n'est pas prévisible\n- **Univers** : ensemble de toutes les issues possibles (noté Ω)\n\n### Probabilité d'un événement\n**Formule** : P(A) = nombre de cas favorables / nombre de cas possibles\n\n**Propriétés** :\n- 0 ≤ P(A) ≤ 1\n- P(Ω) = 1\n- P(∅) = 0\n\n## 5. Opérations sur les Événements\n\n### Événement contraire\nP(Ā) = 1 - P(A)\n\n### Réunion (ou)\nP(A ∪ B) = P(A) + P(B) - P(A ∩ B)\n\n### Intersection (et)\nSi A et B sont indépendants : P(A ∩ B) = P(A) × P(B)\n\n## 6. Variables Aléatoires\n\n### Espérance mathématique\n**E(X) = x₁P(X=x₁) + x₂P(X=x₂) + ... + xₙP(X=xₙ)**\n\n## 7. Lois de Probabilité Usuelles\n\n### Loi de Bernoulli\nExpérience avec deux issues : succès (p) ou échec (1-p)\n\n### Loi Binomiale\nRépétition de n expériences de Bernoulli indépendantes.\n- **Espérance** : E(X) = np\n- **Variance** : V(X) = np(1-p)\n\n### Loi Normale\n- 68% des valeurs dans [μ-σ, μ+σ]\n- 95% des valeurs dans [μ-2σ, μ+2σ]",
+    "sections": [
+      { "title": "Statistiques Descriptives", "content": "Population, échantillon, variables.", "type": "theory", "order": 1 },
+      { "title": "Paramètres de Position", "content": "Moyenne, médiane, mode.", "type": "theory", "order": 2 },
+      { "title": "Paramètres de Dispersion", "content": "Étendue, variance, écart-type.", "type": "theory", "order": 3 },
+      { "title": "Probabilités - Bases", "content": "Expériences aléatoires et probabilités.", "type": "theory", "order": 4 },
+      { "title": "Variables Aléatoires", "content": "Espérance et lois de probabilité.", "type": "theory", "order": 5 }
+    ],
+    "quizzes": ["quiz-statistics"],
+    "difficulty": "intermediate",
+    "estimatedDuration": 55,
+    "createdAt": "2025-01-01T00:00:00.000Z"
+  }
+]

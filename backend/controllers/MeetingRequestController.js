@@ -1,138 +1,123 @@
-const MeetingRequest = require('../models/MeetingRequest');
-const User = require('../models/User');
+const { db } = require('../config/fileDB');
 
-// Student: Create a new meeting request
+// Create a meeting request (student)
 exports.createMeetingRequest = async (req, res) => {
     try {
-        const { teacherId, requestedTime, message, relatedDomain } = req.body;
+        const { teacherId, subject, message, preferredDate, preferredTime } = req.body;
         const studentId = req.user.id;
 
-        if (!teacherId || !requestedTime) {
-            return res.status(400).json({ message: 'Teacher ID and requested time are required.' });
+        const teacher = db.findById('users', teacherId);
+        if (!teacher || teacher.role !== 'teacher') {
+            return res.status(404).json({ message: 'Teacher not found' });
         }
 
-        // Validate teacher exists
-        const teacherExists = await User.findOne({ _id: teacherId, role: 'teacher' });
-        if (!teacherExists) {
-            return res.status(404).json({ message: 'Teacher not found.' });
-        }
-
-        const newRequest = new MeetingRequest({
+        const request = db.create('meetingRequests', {
             student: studentId,
             teacher: teacherId,
-            requestedTime,
+            subject,
             message,
-            relatedDomain: relatedDomain || null,
+            preferredDate,
+            preferredTime,
+            status: 'pending'
         });
 
-        await newRequest.save();
-        
-        // TODO: Emit notification to teacher via WebSocket
-        const io = req.io;
-        const userSockets = req.userSockets;
-        const teacherSocketId = userSockets[teacherId];
-        if (teacherSocketId) {
-            // Populate student info before emitting
-            const populatedReq = await MeetingRequest.findById(newRequest._id).populate('student', 'name');
-            io.to(teacherSocketId).emit('newMeetingRequest', populatedReq.toObject());
-        }
-
-        res.status(201).json(newRequest);
+        res.status(201).json({ message: 'Meeting request created', request });
     } catch (error) {
-        console.error("Error creating meeting request:", error);
         res.status(500).json({ message: 'Error creating meeting request', error: error.message });
     }
 };
 
-// Teacher: Get pending meeting requests
+// Get pending requests for teacher
 exports.getPendingRequestsForTeacher = async (req, res) => {
     try {
         const teacherId = req.user.id;
-        const requests = await MeetingRequest.find({ teacher: teacherId, status: 'pending' })
-                                            .populate('student', 'name email') // Populate student info
-                                            .populate('relatedDomain', 'name')
-                                            .sort({ createdAt: 1 });
-        res.status(200).json(requests);
+        const requests = db.find('meetingRequests').filter(r => r.teacher === teacherId);
+        const users = db.find('users');
+
+        const populatedRequests = requests.map(r => {
+            const student = users.find(u => u._id === r.student);
+            return {
+                ...r,
+                student: student ? { _id: student._id, name: student.name, email: student.email } : null
+            };
+        });
+
+        res.status(200).json(populatedRequests);
     } catch (error) {
-        console.error("Error fetching meeting requests:", error);
-        res.status(500).json({ message: 'Error fetching meeting requests', error: error.message });
+        res.status(500).json({ message: 'Error fetching requests', error: error.message });
     }
 };
 
-// Student: Get their meeting requests
+// Get my requests (student)
 exports.getMyRequests = async (req, res) => {
-     try {
+    try {
         const studentId = req.user.id;
-        const requests = await MeetingRequest.find({ student: studentId })
-                                            .populate('teacher', 'name email') // Populate teacher info
-                                            .populate('relatedDomain', 'name')
-                                            .sort({ createdAt: -1 });
-        res.status(200).json(requests);
+        const requests = db.find('meetingRequests').filter(r => r.student === studentId);
+        const users = db.find('users');
+
+        const populatedRequests = requests.map(r => {
+            const teacher = users.find(u => u._id === r.teacher);
+            return {
+                ...r,
+                teacher: teacher ? { _id: teacher._id, name: teacher.name, email: teacher.email } : null
+            };
+        });
+
+        res.status(200).json(populatedRequests);
     } catch (error) {
-        console.error("Error fetching student meeting requests:", error);
-        res.status(500).json({ message: 'Error fetching meeting requests', error: error.message });
+        res.status(500).json({ message: 'Error fetching requests', error: error.message });
     }
 };
 
-// Teacher: Update meeting request status (accept/reject)
+// Update request status (teacher)
 exports.updateRequestStatus = async (req, res) => {
     try {
         const { requestId } = req.params;
-        const { status } = req.body; // Expect 'accepted' or 'rejected'
+        const { status, responseMessage } = req.body;
         const teacherId = req.user.id;
 
-        if (!['accepted', 'rejected'].includes(status)) {
-            return res.status(400).json({ message: 'Invalid status update.' });
-        }
-
-        const request = await MeetingRequest.findOneAndUpdate(
-            { _id: requestId, teacher: teacherId, status: 'pending' }, // Can only update pending requests owned by this teacher
-            { status },
-            { new: true }
-        );
-
+        const request = db.findById('meetingRequests', requestId);
         if (!request) {
-            return res.status(404).json({ message: 'Pending meeting request not found or access denied.' });
+            return res.status(404).json({ message: 'Request not found' });
         }
 
-        // TODO: Emit notification to student via WebSocket
-        const io = req.io;
-        const userSockets = req.userSockets;
-        const studentSocketId = userSockets[request.student.toString()]; // request.student is an ObjectId
-         if (studentSocketId) {
-             // Populate teacher info before emitting
-             const populatedReq = await MeetingRequest.findById(request._id).populate('teacher', 'name');
-             io.to(studentSocketId).emit('meetingRequestUpdate', populatedReq.toObject());
-         }
+        if (request.teacher !== teacherId) {
+            return res.status(403).json({ message: 'Not authorized' });
+        }
 
-        res.status(200).json(request);
+        const updated = db.findByIdAndUpdate('meetingRequests', requestId, {
+            status,
+            responseMessage,
+            respondedAt: new Date().toISOString()
+        }, { new: true });
+
+        res.status(200).json({ message: 'Request updated', request: updated });
     } catch (error) {
-        console.error("Error updating meeting request status:", error);
-        res.status(500).json({ message: 'Error updating meeting request status', error: error.message });
+        res.status(500).json({ message: 'Error updating request', error: error.message });
     }
 };
 
-// Student: Cancel a pending meeting request
+// Cancel a request (student)
 exports.cancelRequest = async (req, res) => {
     try {
-         const { requestId } = req.params;
-         const studentId = req.user.id;
+        const { requestId } = req.params;
+        const studentId = req.user.id;
 
-        const request = await MeetingRequest.findOneAndUpdate(
-            { _id: requestId, student: studentId, status: 'pending' }, // Can only cancel own pending requests
-            { status: 'cancelled' },
-            { new: true }
-        );
-
+        const request = db.findById('meetingRequests', requestId);
         if (!request) {
-            return res.status(404).json({ message: 'Pending meeting request not found.' });
+            return res.status(404).json({ message: 'Request not found' });
         }
-        
-        // TODO: Optionally notify teacher of cancellation?
 
-        res.status(200).json({ message: 'Meeting request cancelled.' });
+        if (request.student !== studentId) {
+            return res.status(403).json({ message: 'Not authorized' });
+        }
+
+        const updated = db.findByIdAndUpdate('meetingRequests', requestId, {
+            status: 'cancelled'
+        }, { new: true });
+
+        res.status(200).json({ message: 'Request cancelled', request: updated });
     } catch (error) {
-        console.error("Error cancelling meeting request:", error);
-        res.status(500).json({ message: 'Error cancelling meeting request', error: error.message });
+        res.status(500).json({ message: 'Error cancelling request', error: error.message });
     }
-}; 
+};

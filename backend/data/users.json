@@ -1,0 +1,67 @@
+[
+  {
+    "_id": "user-student-1",
+    "name": "Jean Dupont",
+    "email": "student@test.com",
+    "password": "$2a$10$Dca8gwTwbkvOKXJmAc5QreOIUu95fp53Z3uA6empWtTWmOdSHQTOO",
+    "role": "student",
+    "birthday": "2010-05-15",
+    "studies": [
+      {
+        "chapter": "chapter-algebra",
+        "session_start": "2026-01-19T16:54:23.505Z"
+      },
+      {
+        "chapter": "chapter-algebra",
+        "session_start": "2026-01-19T16:54:23.739Z"
+      },
+      {
+        "chapter": "chapter-algebra",
+        "session_start": "2026-01-19T16:55:21.259Z"
+      },
+      {
+        "chapter": "chapter-algebra",
+        "session_start": "2026-01-19T16:57:08.297Z"
+      },
+      {
+        "chapter": "chapter-algebra",
+        "session_start": "2026-01-19T16:57:08.441Z"
+      },
+      {
+        "chapter": "chapter-algebra",
+        "session_start": "2026-01-19T16:57:44.969Z"
+      }
+    ],
+    "quizAttempts": [
+      {
+        "quiz": "quiz-algebra",
+        "date": "2026-01-19T16:55:15.228Z",
+        "score": 70,
+        "correct": 7,
+        "total": 10,
+        "nextReview": null
+      },
+      {
+        "quiz": "quiz-algebra",
+        "date": "2026-01-19T16:57:41.721Z",
+        "score": 10,
+        "correct": 1,
+        "total": 10,
+        "nextReview": null
+      }
+    ]
+  },
+  {
+    "_id": "user-teacher-1",
+    "name": "Marie Martin",
+    "email": "teacher@test.com",
+    "password": "$2a$10$Dca8gwTwbkvOKXJmAc5QreOIUu95fp53Z3uA6empWtTWmOdSHQTOO",
+    "role": "teacher",
+    "birthday": "1985-03-22",
+    "domains": [
+      "algebra",
+      "geometry",
+      "statistics"
+    ]
+  }
+]

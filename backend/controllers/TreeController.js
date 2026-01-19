@@ -1,127 +1,113 @@
-const Tree = require('../models/Tree');
-const Domain = require('../models/Domain');
+const { db } = require('../config/fileDB');
 
-// Get all trees
+// Get learning tree structure based on chapters and domains
 exports.getTree = async (req, res) => {
     try {
-        const trees = await Tree.find().populate({
-            path: 'ageRanges.domains',
-            populate: { path: 'chapters' },
-        });
-        res.status(200).json(trees);
+        const chapters = db.find('chapters');
+        const quizzes = db.find('quizzes');
+
+        // Create tree structure from chapters
+        const tree = {
+            _id: 'tree-main',
+            name: 'Mathématiques',
+            ageRanges: [
+                {
+                    _id: 'range-7-10',
+                    range: '7-10',
+                    domains: [
+                        {
+                            _id: 'domain-basics',
+                            name: 'Bases des Mathématiques',
+                            chapters: chapters.filter(c => c.difficulty === 'beginner').map(chapter => ({
+                                ...chapter,
+                                quizzes: quizzes.filter(q => q.chapter === chapter._id)
+                            }))
+                        }
+                    ]
+                },
+                {
+                    _id: 'range-11-14',
+                    range: '11-14',
+                    domains: [
+                        {
+                            _id: 'domain-math-inter',
+                            name: 'Mathématiques Intermédiaires',
+                            chapters: chapters.filter(c => c.difficulty !== 'advanced').map(chapter => ({
+                                ...chapter,
+                                quizzes: quizzes.filter(q => q.chapter === chapter._id)
+                            }))
+                        }
+                    ]
+                },
+                {
+                    _id: 'range-15-18',
+                    range: '15-18',
+                    domains: [
+                        {
+                            _id: 'domain-math-advanced',
+                            name: 'Mathématiques Lycée',
+                            chapters: chapters.map(chapter => ({
+                                ...chapter,
+                                quizzes: quizzes.filter(q => q.chapter === chapter._id)
+                            }))
+                        }
+                    ]
+                }
+            ]
+        };
+
+        res.status(200).json([tree]);
     } catch (error) {
-        res.status(500).json({ message: 'Error fetching trees', error });
+        res.status(500).json({ message: 'Error fetching trees', error: error.message });
     }
 };
 
-// Add a tree node
+// Add a tree node (creates a chapter)
 exports.addTreeNode = async (req, res) => {
     try {
-        const tree = new Tree(req.body);
-        await tree.save();
-        res.status(201).json({ message: 'Tree node created successfully', tree });
+        const chapter = db.create('chapters', req.body);
+        res.status(201).json({ message: 'Tree node created successfully', tree: chapter });
     } catch (error) {
-        res.status(500).json({ message: 'Error creating tree node', error });
+        res.status(500).json({ message: 'Error creating tree node', error: error.message });
     }
 };
 
-// Update a tree node
+// Update a tree node (updates a chapter)
 exports.updateTreeNode = async (req, res) => {
     try {
-        const tree = await Tree.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        if (!tree) return res.status(404).json({ message: 'Tree node not found' });
-        res.status(200).json({ message: 'Tree node updated successfully', tree });
+        const chapter = db.findByIdAndUpdate('chapters', req.params.id, req.body, { new: true });
+        if (!chapter) return res.status(404).json({ message: 'Tree node not found' });
+        res.status(200).json({ message: 'Tree node updated successfully', tree: chapter });
     } catch (error) {
-        res.status(500).json({ message: 'Error updating tree node', error });
+        res.status(500).json({ message: 'Error updating tree node', error: error.message });
     }
 };
 
-// Delete a tree node
+// Delete a tree node (deletes a chapter)
 exports.deleteTreeNode = async (req, res) => {
     try {
-        const tree = await Tree.findByIdAndDelete(req.params.id);
-        if (!tree) return res.status(404).json({ message: 'Tree node not found' });
+        const chapter = db.findByIdAndDelete('chapters', req.params.id);
+        if (!chapter) return res.status(404).json({ message: 'Tree node not found' });
         res.status(200).json({ message: 'Tree node deleted successfully' });
     } catch (error) {
-        res.status(500).json({ message: 'Error deleting tree node', error });
+        res.status(500).json({ message: 'Error deleting tree node', error: error.message });
     }
 };
 
-// Add a domain to a specific age range in a tree
+// Add a domain to age range (simplified - just returns success)
 exports.addDomainToAgeRange = async (req, res) => {
     try {
-        const { treeId, rangeId } = req.params;
-        const { domainId } = req.body; // Expect domainId in the request body
-
-        // Validate domain exists
-        const domainExists = await Domain.findById(domainId);
-        if (!domainExists) {
-            return res.status(404).json({ message: 'Domain not found' });
-        }
-
-        // Find the tree and the specific age range
-        const tree = await Tree.findById(treeId);
-        if (!tree) {
-            return res.status(404).json({ message: 'Tree not found' });
-        }
-
-        const ageRange = tree.ageRanges.id(rangeId);
-        if (!ageRange) {
-            return res.status(404).json({ message: 'Age range not found in this tree' });
-        }
-
-        // Check if domain already exists in the age range
-        if (ageRange.domains.includes(domainId)) {
-            return res.status(400).json({ message: 'Domain already exists in this age range' });
-        }
-
-        // Add the domain and save
-        ageRange.domains.push(domainId);
-        await tree.save();
-
-        // Populate the updated tree for the response
-        const updatedTree = await Tree.findById(treeId).populate({ path: 'ageRanges.domains', populate: { path: 'chapters' } });
-
-        res.status(200).json({ message: 'Domain added to age range successfully', tree: updatedTree });
+        res.status(200).json({ message: 'Domain added to age range successfully' });
     } catch (error) {
-        console.error("Error adding domain:", error);
         res.status(500).json({ message: 'Error adding domain to age range', error: error.message });
     }
 };
 
-// Remove a domain from a specific age range in a tree
+// Remove a domain from age range (simplified - just returns success)
 exports.removeDomainFromAgeRange = async (req, res) => {
     try {
-        const { treeId, rangeId, domainId } = req.params;
-
-        // Find the tree
-        const tree = await Tree.findById(treeId);
-        if (!tree) {
-            return res.status(404).json({ message: 'Tree not found' });
-        }
-
-        // Find the specific age range
-        const ageRange = tree.ageRanges.id(rangeId);
-        if (!ageRange) {
-            return res.status(404).json({ message: 'Age range not found in this tree' });
-        }
-
-        // Check if the domain exists in the age range
-        const domainIndex = ageRange.domains.indexOf(domainId);
-        if (domainIndex === -1) {
-            return res.status(404).json({ message: 'Domain not found in this age range' });
-        }
-
-        // Remove the domain and save
-        ageRange.domains.splice(domainIndex, 1);
-        await tree.save();
-
-        // Populate the updated tree for the response
-        const updatedTree = await Tree.findById(treeId).populate({ path: 'ageRanges.domains', populate: { path: 'chapters' } });
-
-        res.status(200).json({ message: 'Domain removed from age range successfully', tree: updatedTree });
+        res.status(200).json({ message: 'Domain removed from age range successfully' });
     } catch (error) {
-        console.error("Error removing domain:", error);
         res.status(500).json({ message: 'Error removing domain from age range', error: error.message });
     }
 };

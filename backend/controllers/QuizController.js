@@ -1,10 +1,9 @@
-const Quiz = require('../models/Quiz');
-const Student = require('../models/Student');
+const { db } = require('../config/fileDB');
 
 // Get all quizzes
 exports.getAllQuizzes = async (req, res) => {
     try {
-        const quizzes = await Quiz.find();
+        const quizzes = db.find('quizzes');
         res.status(200).json(quizzes);
     } catch (error) {
         console.error('Error fetching quizzes:', error);
@@ -17,7 +16,7 @@ exports.getQuizById = async (req, res) => {
     try {
         const quizId = req.params.id;
         
-        const quiz = await Quiz.findById(quizId);
+        const quiz = db.findById('quizzes', quizId);
         if (!quiz) {
             return res.status(404).json({ message: 'Quiz not found' });
         }
@@ -33,7 +32,7 @@ exports.getQuizById = async (req, res) => {
 exports.getQuizzesByChapter = async (req, res) => {
     try {
         const chapterId = req.params.chapterId;
-        const quizzes = await Quiz.find({ chapter: chapterId });
+        const quizzes = db.find('quizzes', { chapter: chapterId });
         res.status(200).json(quizzes);
     } catch (error) {
         console.error('Error fetching chapter quizzes:', error);
@@ -44,8 +43,7 @@ exports.getQuizzesByChapter = async (req, res) => {
 // Create a new quiz
 exports.createQuiz = async (req, res) => {
     try {
-        const quiz = new Quiz(req.body);
-        await quiz.save();
+        const quiz = db.create('quizzes', req.body);
         res.status(201).json({ message: 'Quiz created successfully', quiz });
     } catch (error) {
         console.error('Error creating quiz:', error);
@@ -59,7 +57,7 @@ exports.updateQuiz = async (req, res) => {
         const quizId = req.params.id;
         const updates = req.body;
         
-        const quiz = await Quiz.findByIdAndUpdate(quizId, updates, { new: true });
+        const quiz = db.findByIdAndUpdate('quizzes', quizId, updates, { new: true });
         if (!quiz) {
             return res.status(404).json({ message: 'Quiz not found' });
         }
@@ -76,7 +74,7 @@ exports.deleteQuiz = async (req, res) => {
     try {
         const quizId = req.params.id;
         
-        const quiz = await Quiz.findByIdAndDelete(quizId);
+        const quiz = db.findByIdAndDelete('quizzes', quizId);
         if (!quiz) {
             return res.status(404).json({ message: 'Quiz not found' });
         }
@@ -96,7 +94,7 @@ exports.submitQuizAttempt = async (req, res) => {
         const userId = req.user.id;
         
         // Find the quiz
-        const quiz = await Quiz.findById(quizId);
+        const quiz = db.findById('quizzes', quizId);
         if (!quiz) {
             return res.status(404).json({ message: 'Quiz not found' });
         }
@@ -122,29 +120,35 @@ exports.submitQuizAttempt = async (req, res) => {
             };
         });
         
-        const scorePercentage = (correctCount / quiz.questions.length) * 100;
+        const scorePercentage = Math.round((correctCount / quiz.questions.length) * 100);
         
-        // Record the attempt in the student's record for spaced repetition
-        if (quiz.type === 'spaced-repetition') {
-            try {
-                await Student.findByIdAndUpdate(
-                    userId,
-                    { 
-                        $push: { 
-                            quizAttempts: {
-                                quiz: quizId,
-                                date: new Date(),
-                                score: scorePercentage,
-                                correct: correctCount,
-                                total: quiz.questions.length
-                            } 
-                        } 
+        // Record the attempt in the user's record
+        try {
+            const user = db.findById('users', userId);
+            if (user && user.role === 'student') {
+                // Calculate next review date for spaced repetition
+                let nextReview = null;
+                if (quiz.type === 'spaced-repetition') {
+                    const daysToAdd = scorePercentage >= 80 ? 7 : (scorePercentage >= 60 ? 3 : 1);
+                    nextReview = new Date();
+                    nextReview.setDate(nextReview.getDate() + daysToAdd);
+                }
+
+                db.findByIdAndUpdate('users', userId, {
+                    $push: {
+                        quizAttempts: {
+                            quiz: quizId,
+                            date: new Date().toISOString(),
+                            score: scorePercentage,
+                            correct: correctCount,
+                            total: quiz.questions.length,
+                            nextReview: nextReview ? nextReview.toISOString() : null
+                        }
                     }
-                );
-            } catch (err) {
-                console.error('Error recording quiz attempt:', err);
-                // Continue anyway - non-critical error
+                });
             }
+        } catch (err) {
+            console.error('Error recording quiz attempt:', err);
         }
         
         res.status(200).json({

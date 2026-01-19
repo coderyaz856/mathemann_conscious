@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@tiptap/extension-image": "^3.15.3",
+    "@tiptap/react": "^3.15.3",
+    "@tiptap/starter-kit": "^3.15.3",
     "axios": "^0.27.2",
     "buffer": "^6.0.3",
     "crypto-browserify": "^3.12.1",
